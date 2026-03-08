@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NewsSphere - Your Daily News Source</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1>News Sphere</h1>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search news...">
+<button onclick="searchNews()">Search</button>
+</div>
+
+<nav>
+<button onclick="getNews('general')">General</button>
+<button onclick="getNews('technology')">Technology</button>
+<button onclick="getNews('business')">Business</button>
+<button onclick="getNews('sports')">Sports</button>
+<button onclick="getNews('health')">Health</button>
+<button onclick="getNews('entertainment')">Entertainment</button>
+</nav>
+
+</header>
+
+<main>
+<div id="newsContainer" class="news-container"></div>
+</main>
+
+<script src="script.js"></script>
+</body>
+
+</html>
