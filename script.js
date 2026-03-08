@@ -17,8 +17,7 @@ if(loading) return;
 loading = true;
 
 const url =
-`https://gnews.io/api/v4/top-headlines?category=${category}&lang=en&country=in&max=10&page=${page}&apikey=${API_KEY}`;
-
+`https://api.allorigins.win/raw?url=https://gnews.io/api/v4/top-headlines?category=${category}&lang=en&country=in&max=10&page=${page}&apikey=${API_KEY}`;
 try{
 
 const response = await fetch(url);
@@ -96,7 +95,7 @@ return;
 newsContainer.innerHTML="Searching...";
 
 const url=
-`https://gnews.io/api/v4/search?q=${query}&lang=en&country=in&max=10&apikey=${API_KEY}`;
+`https://api.allorigins.win/raw?url=https://gnews.io/api/v4/search?q=${query}&lang=en&country=in&max=10&apikey=${API_KEY}`;
 
 try{
 
@@ -125,3 +124,4 @@ loadNews();
 }
 
 });
+
