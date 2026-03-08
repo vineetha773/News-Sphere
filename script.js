@@ -1,5 +1,4 @@
 const API_KEY = "c52bd918eae40d9cd640a0871f2ce481";
-
 const container = document.getElementById("newsContainer");
 
 let category = "WORLD";
