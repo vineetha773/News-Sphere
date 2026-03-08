@@ -1,105 +1,127 @@
 const API_KEY = "c52bd918eae40d9cd640a0871f2ce481";
 
-
-
 const newsContainer = document.getElementById("newsContainer");
 
 let page = 1;
-let currentCategory = "general";
+let category = "general";
 let loading = false;
 
 window.onload = () => {
-    loadNews();
+loadNews();
 };
 
-async function loadNews() {
+async function loadNews(){
 
-    if (loading) return;
+if(loading) return;
 
-    loading = true;
+loading = true;
 
-    const url = `https://gnews.io/api/v4/top-headlines?category=${currentCategory}&lang=en&country=in&max=10&page=${page}&apikey=${API_KEY}`;
+const url =
+`https://gnews.io/api/v4/top-headlines?category=${category}&lang=en&country=in&max=10&page=${page}&apikey=${API_KEY}`;
 
-    try {
+try{
 
-        const response = await fetch(url);
-        const data = await response.json();
+const response = await fetch(url);
 
-        displayNews(data.articles);
-
-        page++;
-
-    } catch (error) {
-
-        console.log(error);
-
-    }
-
-    loading = false;
+if(!response.ok){
+throw new Error("API request failed");
 }
 
-function getNews(category) {
+const data = await response.json();
 
-    currentCategory = category;
+displayNews(data.articles);
 
-    page = 1;
+page++;
 
-    newsContainer.innerHTML = "";
+}catch(error){
 
-    loadNews();
+console.log(error);
+
+newsContainer.innerHTML += "<p>Failed to load more news</p>";
+
 }
 
-function displayNews(articles) {
-
-    if (!articles || articles.length === 0) return;
-
-    articles.forEach(article => {
-
-        const card = document.createElement("div");
-
-        card.className = "card";
-
-        card.innerHTML = `
-        <img src="${article.image || ''}">
-        <h3>${article.title}</h3>
-        <p>${article.description || ""}</p>
-        <a href="${article.url}" target="_blank">Read More</a>
-        `;
-
-        newsContainer.appendChild(card);
-    });
+loading = false;
 }
 
-async function searchNews() {
+function displayNews(articles){
 
-    const query = document.getElementById("searchInput").value;
+if(!articles || articles.length === 0) return;
 
-    if (!query) {
-        alert("Enter search text");
-        return;
-    }
+articles.forEach(article=>{
 
-    newsContainer.innerHTML = "";
+const card=document.createElement("div");
 
-    page = 1;
+card.className="card";
 
-    const url = `https://gnews.io/api/v4/search?q=${query}&lang=en&country=in&max=10&page=${page}&apikey=${API_KEY}`;
+card.innerHTML=`
 
-    const response = await fetch(url);
+<img src="${article.image || ''}">
 
-    const data = await response.json();
+<h3>${article.title}</h3>
 
-    displayNews(data.articles);
+<p>${article.description || ""}</p>
+
+<a href="${article.url}" target="_blank">Read More</a>
+
+`;
+
+newsContainer.appendChild(card);
+
+});
+
 }
 
-// Infinite Scroll
+function changeCategory(newCategory){
 
-window.addEventListener("scroll", () => {
+category=newCategory;
 
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+page=1;
 
-        loadNews();
+newsContainer.innerHTML="";
 
-    }
+loadNews();
+
+}
+
+async function searchNews(){
+
+const query=document.getElementById("searchInput").value;
+
+if(!query){
+alert("Enter search text");
+return;
+}
+
+newsContainer.innerHTML="Searching...";
+
+const url=
+`https://gnews.io/api/v4/search?q=${query}&lang=en&country=in&max=10&apikey=${API_KEY}`;
+
+try{
+
+const response=await fetch(url);
+
+const data=await response.json();
+
+newsContainer.innerHTML="";
+
+displayNews(data.articles);
+
+}catch(error){
+
+newsContainer.innerHTML="Search failed";
+
+}
+
+}
+
+window.addEventListener("scroll",()=>{
+
+if(window.innerHeight+window.scrollY>=document.body.offsetHeight-500){
+
+loadNews();
+
+}
 
 });
